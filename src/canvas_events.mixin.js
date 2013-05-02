@@ -401,7 +401,7 @@
                       && target._findTargetCorner(e, this._offset);
 
         if (!corner) {
-          s.cursor = this.hoverCursor;
+          s.cursor = target && target.hoverCursor ? target.hoverCursor : this.hoverCursor;
         }
         else {
           if (corner in cursorMap) {
