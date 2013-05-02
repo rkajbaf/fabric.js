@@ -478,8 +478,39 @@
           (top + height + (this.rotatingPointOffset / this.scaleY) - sizeY/2 + strokeWidth2 + paddingY)
           : (top - (this.rotatingPointOffset / this.scaleY) - sizeY/2 - strokeWidth2 - paddingY);
 
-        isVML || ctx.clearRect(_left, _top, sizeX, sizeY);
-        ctx[methodName](_left, _top, sizeX, sizeY);
+		if (this.canvas.rotationControlIcon !== null) {
+			// function to draw an icon for the rotation icon
+			var drawRotateIcon = function() {
+				// get the icon to draw
+				var icon = this.canvas.rotationControlIcon;
+
+				// re-center based on size of icon
+				_left -= (icon.width/this.scaleX-sizeX)/2;
+				_top -= (icon.height/this.scaleY-sizeY)/2;
+
+				// draw icon, adjusting for scale
+				ctx.drawImage(icon, _left, _top, icon.width/this.scaleX, icon.height/this.scaleY);
+			}
+
+			// if its a string, assume it's a URL and load that first
+			if (typeof this.canvas.rotationControlIcon === 'string') {
+
+				fabric.util.loadImage(this.canvas.rotationControlIcon, function(img) {
+					// store image so we don't have to load it again
+					this.canvas.rotationControlIcon = img;
+
+					// now that it's stored, call draw method
+					drawRotateIcon.call(this);
+		    	}, this);
+
+		    // otherwise, call draw method, assume icon is already stored
+			} else {
+				drawRotateIcon.call(this);
+			}
+		} else {
+			isVML || ctx.clearRect(_left, _top, sizeX, sizeY);
+	        ctx[methodName](_left, _top, sizeX, sizeY);
+		}
       }
 
       ctx.restore();

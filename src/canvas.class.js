@@ -115,6 +115,12 @@
     rotationCursor:         'crosshair',
 
     /**
+     * Cursor value used for rotation point
+     * @type String
+     */
+    rotationControlIcon:     null,
+
+    /**
      * Default element class that's given to wrapper (div) element of canvas
      * @type String
      */
