@@ -208,8 +208,15 @@
       // http://www.geog.ubc.ca/courses/klink/gis.notes/ncgia/u32.html
       // http://idav.ucdavis.edu/~okreylos/TAship/Spring2000/PointInPolygon.html
 
+      var coords = typeof target.eventBounds !== 'undefined' ? {
+      	tl:  {x: target.eventBounds.x, y: target.eventBounds.y},
+      	tr:  {x: target.eventBounds.x + target.eventBounds.width, y: target.eventBounds.y},
+      	bl:  {x: target.eventBounds.x, y:target.eventBounds.y + target.eventBounds.height},
+      	br:  {x: target.eventBounds.x + target.eventBounds.width, y:target.eventBounds.y + target.eventBounds.height},
+      }: target.oCoords;
+
       // we iterate through each object. If target found, return it.
-      var iLines = target._getImageLines(target.oCoords),
+      var iLines = target._getImageLines(coords),
           xpoints = target._findCrossPoints(x, y, iLines);
 
       // if xcount is odd then we clicked inside the object
