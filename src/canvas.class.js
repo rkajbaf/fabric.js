@@ -4,6 +4,7 @@
       getPointer = fabric.util.getPointer,
       degreesToRadians = fabric.util.degreesToRadians,
       radiansToDegrees = fabric.util.radiansToDegrees,
+      rotatePoint = fabric.util.rotatePoint,
       atan2 = Math.atan2,
       abs = Math.abs,
       min = Math.min,
@@ -215,9 +216,12 @@
       	br:  {x: target.eventBounds.x + target.eventBounds.width, y:target.eventBounds.y + target.eventBounds.height},
       }: target.oCoords;
 
+      // if the area is rotated, we want to use the point at it's unrotated position
+      var unrotatedPoint = rotatePoint( new fabric.Point(x,y), coords.tl, degreesToRadians(-target.angle));
+
       // we iterate through each object. If target found, return it.
       var iLines = target._getImageLines(coords),
-          xpoints = target._findCrossPoints(x, y, iLines);
+          xpoints = target._findCrossPoints(unrotatedPoint.x, unrotatedPoint.y, iLines);
 
       // if xcount is odd then we clicked inside the object
       // For the specific case of square images xcount === 1 in all true cases
